@@ -1,0 +1,20 @@
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo
+select * from crawler.demo where value=12
+select * from crawler.demo where value=12
+select * from crawler.demo where value=12
+select * from crawler.demo where value=7
+select * from crawler.demo where value=12
+select * from crawler.demo where value=124
+Select * from rawler.demo where value=777
+Select * from crawler.demo where value=777
+select * from crawler.demo 
+select * from crawler.demo
+select * from crawler.demo
