@@ -1,3 +1,6 @@
+/*
+ * This java class defines the message format.
+ */
 package com.socket;
 
 import java.io.Serializable;

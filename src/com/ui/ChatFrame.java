@@ -1,6 +1,11 @@
+/*
+ * This java class creates the chat frame.
+ */
 package com.ui;
 
 import java.awt.event.WindowEvent;
+
+import static com.socket.EncodeDecode.*;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
@@ -24,11 +29,15 @@ public class ChatFrame extends javax.swing.JFrame {
 	public Thread clientThread;
 	public DefaultListModel model;
 	public File file;
-    public File writeQuery = new File("queryHistory.txt");
-    public Collection< String > queries = new ArrayList< String >(); 
-	//public String historyFile = "D:/History.xml";
-	//public HistoryFrame historyFrame;
-   //public History hist;
+	public File writeQuery = new File("queryHistory.txt");
+	public File encodedQueryFile = new File("indexedSearch/queryHistory.txt");
+	public Collection<String> queries = new ArrayList<String>();
+	public Collection<String> encodedQueries = new ArrayList<String>();
+	
+
+	// public String historyFile = "D:/History.xml";
+	// public HistoryFrame historyFrame;
+	// public History hist;
 
 	public ChatFrame() {
 		initComponents();
@@ -47,7 +56,7 @@ public class ChatFrame extends javax.swing.JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-					client.send(new Message("message", username, ".bye",
+					client.send(new Message("message", username, "bye",
 							"SERVER"));
 					clientThread.stop();
 				} catch (Exception ex) {
@@ -75,7 +84,7 @@ public class ChatFrame extends javax.swing.JFrame {
 			}
 		});
 
-	//	hist = new History(historyFile);
+		// hist = new History(historyFile);
 	}
 
 	public boolean isWin32() {
@@ -111,9 +120,9 @@ public class ChatFrame extends javax.swing.JFrame {
 		jButton5 = new javax.swing.JButton();
 		jButton6 = new javax.swing.JButton();
 		jLabel6 = new javax.swing.JLabel();
-		//jLabel7 = new javax.swing.JLabel();
+		// jLabel7 = new javax.swing.JLabel();
 		jTextField6 = new javax.swing.JTextField();
-		//jButton7 = new javax.swing.JButton();
+		// jButton7 = new javax.swing.JButton();
 		// jButton8 = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -133,7 +142,7 @@ public class ChatFrame extends javax.swing.JFrame {
 			}
 		});
 
-		jTextField3.setText("Pratik");
+		jTextField3.setText("XXXXXX");
 		jTextField3.setEnabled(false);
 
 		jLabel3.setText("Password :");
@@ -200,15 +209,15 @@ public class ChatFrame extends javax.swing.JFrame {
 
 		jLabel6.setText("File :");
 
-	//	jLabel7.setText("History File :");
+		// jLabel7.setText("History File :");
 
-	//	jButton7.setText("...");
-	//	jButton7.setEnabled(false);
-	/*	jButton7.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton7ActionPerformed(evt);
-			}
-		});*/
+		// jButton7.setText("...");
+		// jButton7.setEnabled(false);
+		/*
+		 * jButton7.addActionListener(new java.awt.event.ActionListener() {
+		 * public void actionPerformed(java.awt.event.ActionEvent evt) {
+		 * jButton7ActionPerformed(evt); } });
+		 */
 
 		/*
 		 * jButton8.setText("Show"); jButton8.setEnabled(false);
@@ -241,8 +250,10 @@ public class ChatFrame extends javax.swing.JFrame {
 																						jLabel1)
 																				.addComponent(
 																						jLabel4)
-																			/*	.addComponent(
-																						jLabel7)*/)
+																/*
+																 * .addComponent(
+																 * jLabel7)
+																 */)
 																.addPreferredGap(
 																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 																.addGroup(
@@ -301,11 +312,39 @@ public class ChatFrame extends javax.swing.JFrame {
 																														javax.swing.GroupLayout.PREFERRED_SIZE,
 																														70,
 																														javax.swing.GroupLayout.PREFERRED_SIZE)
-																										/*.addComponent(
-																														//jButton7,
-																														//javax.swing.GroupLayout.PREFERRED_SIZE,
-																													//	70,
-																													//	javax.swing.GroupLayout.PREFERRED_SIZE)*/)
+																								/*
+																								 * .
+																								 * addComponent
+																								 * (
+																								 * /
+																								 * /
+																								 * jButton7
+																								 * ,
+																								 * /
+																								 * /
+																								 * javax
+																								 * .
+																								 * swing
+																								 * .
+																								 * GroupLayout
+																								 * .
+																								 * PREFERRED_SIZE
+																								 * ,
+																								 * /
+																								 * /
+																								 * 70
+																								 * ,
+																								 * /
+																								 * /
+																								 * javax
+																								 * .
+																								 * swing
+																								 * .
+																								 * GroupLayout
+																								 * .
+																								 * PREFERRED_SIZE
+																								 * )
+																								 */)
 																								.addPreferredGap(
 																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 																								.addGroup(
@@ -424,13 +463,13 @@ public class ChatFrame extends javax.swing.JFrame {
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.BASELINE)
-											//	.addComponent(jLabel7)
+										// .addComponent(jLabel7)
 												.addComponent(
 														jTextField6,
 														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
-											//	.addComponent(jButton7)
+								// .addComponent(jButton7)
 								/* .addComponent(jButton8) */)
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -519,17 +558,27 @@ public class ChatFrame extends javax.swing.JFrame {
 			client.send(new Message("login", username, password, "SERVER"));
 		}
 	}// GEN-LAST:event_jButton2ActionPerformed
+
 	public String buffer = "", buffer1 = "";
-	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_jButton4ActionPerformed
-		String msg = jTextField4.getText();//messsage we type
+
+	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)
+			throws IOException {// GEN-FIRST:event_jButton4ActionPerformed
+		String msg = jTextField4.getText();// messsage we type
 		buffer = msg;
 		buffer1 = msg;
 		queries.clear();
+		encodedQueries.clear();
+		encodedQueries.add(encode(msg));
 		queries.add(msg);
-		if(msg.toLowerCase().indexOf("select")==0 && msg.toLowerCase().indexOf("from") > 8){
-			FileUtils.writeLines(writeQuery, queries,true);
-			}
-		String target = client.ipName;//jList1.getSelectedValue().toString();//the selected user in activity login window
+		if (msg.toLowerCase().indexOf("select") == 0
+				&& msg.toLowerCase().indexOf("from") > 8) {
+			FileUtils.writeLines(writeQuery, queries, true);
+			FileUtils.writeLines(encodedQueryFile, encodedQueries, true);
+			
+		}
+		String target = client.ipName;// jList1.getSelectedValue().toString();//the
+										// selected user in activity login
+										// window
 		if (!msg.isEmpty() && !target.isEmpty()) {
 			jTextField4.setText("");
 			client.send(new Message("message", username, msg, target));
@@ -577,26 +626,21 @@ public class ChatFrame extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_jButton6ActionPerformed
 
-	/*private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton7ActionPerformed
-		JFileChooser jf = new JFileChooser();
-		jf.showDialog(this, "Select File");
-
-		if (!jf.getSelectedFile().getPath().isEmpty()) {
-			historyFile = jf.getSelectedFile().getPath();
-			if (this.isWin32()) {
-				historyFile = historyFile.replace("/", "\\");
-			}
-			jTextField6.setText(historyFile);
-			jTextField6.setEditable(false);
-			jButton7.setEnabled(false);
-			// jButton8.setEnabled(true);
-			hist = new History(historyFile);
-
-			historyFrame = new HistoryFrame(hist);
-			historyFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			historyFrame.setVisible(false);
-		}
-	}*/// GEN-LAST:event_jButton7ActionPerformed
+	/*
+	 * private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//
+	 * GEN-FIRST:event_jButton7ActionPerformed JFileChooser jf = new
+	 * JFileChooser(); jf.showDialog(this, "Select File");
+	 * 
+	 * if (!jf.getSelectedFile().getPath().isEmpty()) { historyFile =
+	 * jf.getSelectedFile().getPath(); if (this.isWin32()) { historyFile =
+	 * historyFile.replace("/", "\\"); } jTextField6.setText(historyFile);
+	 * jTextField6.setEditable(false); jButton7.setEnabled(false); //
+	 * jButton8.setEnabled(true); hist = new History(historyFile);
+	 * 
+	 * historyFrame = new HistoryFrame(hist);
+	 * historyFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	 * historyFrame.setVisible(false); } }
+	 */// GEN-LAST:event_jButton7ActionPerformed
 
 	/*
 	 * private void jButton8ActionPerformed(java.awt.event.ActionEvent evt)
@@ -626,7 +670,7 @@ public class ChatFrame extends javax.swing.JFrame {
 	public javax.swing.JButton jButton4;
 	public javax.swing.JButton jButton5;
 	public javax.swing.JButton jButton6;
-	//public javax.swing.JButton jButton7;
+	// public javax.swing.JButton jButton7;
 	// public javax.swing.JButton jButton8;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;

@@ -1,3 +1,6 @@
+/* 
+ * This Java class tells us the login details of the user. If the user is new, it adds the user details to the database.
+ */
 package com.socket;
 
 import java.io.*;
@@ -40,7 +43,8 @@ public class Database {
 			}
 			return false;
 		} catch (Exception ex) {
-			System.out.println("Database exception : userExists()");
+			System.out
+					.println("Database exception : User already exists in the database!");
 			return false;
 		}
 	}
@@ -108,7 +112,7 @@ public class Database {
 			transformer.transform(source, result);
 
 		} catch (Exception ex) {
-			System.out.println("Exceptionmodify xml");
+			System.out.println("Exception..... Modify the xml file!!!");
 		}
 	}
 

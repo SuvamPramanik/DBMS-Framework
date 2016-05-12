@@ -1,3 +1,6 @@
+/*
+ * This java class defines the socket programming for the client.
+ */
 package com.socket;
 
 import java.io.*;
@@ -285,7 +288,6 @@ public class SocketServer implements Runnable {
 
 	private void addThread(Socket socket) {
 		if (clientCount < clients.length) {
-			// System.out.println("ffffffffffffffffffffffffffffffffffffffffff");
 			ui.jTextArea1.append("\nClient accepted: " + socket);
 			sb.append(":");
 			sb.append(socket.toString().substring(13,

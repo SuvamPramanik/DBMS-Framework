@@ -1,3 +1,6 @@
+/*
+ * This java class is used to upload the data to be sent to a client.
+ */
 package com.socket;
 
 import com.ui.ChatFrame;

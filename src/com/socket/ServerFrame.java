@@ -1,3 +1,6 @@
+/*
+ * This java class defines the server jframe which enables the user to start the server.
+ */
 package com.socket;
 
 import java.awt.Color;
@@ -9,7 +12,9 @@ public class ServerFrame extends javax.swing.JFrame {
 
 	public SocketServer server;
 	public Thread serverThread;
-	public String filePath = "D:/Data.xml";
+	
+	//Please specify the file path here.....varies according to the system
+	public String filePath = "C:/Data.xml";
 	public JFileChooser fileChooser;
 
 	public ServerFrame() {

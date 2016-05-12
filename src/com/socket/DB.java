@@ -1,3 +1,6 @@
+/*
+ * This java class establishes the database connection and also creates the table (if it does not exist).
+ */
 package com.socket;
 
 import java.sql.Connection;
@@ -22,7 +25,7 @@ public class DB {
 				Class.forName("com.mysql.jdbc.Driver");
 				System.out.println("Creating database...");
 				String url = "jdbc:mysql://localhost:3306/";
-				conn = DriverManager.getConnection(url, "root1", "");
+				conn = DriverManager.getConnection(url, "root", "");
 				stmnt = conn.createStatement();
 				String sql = "CREATE DATABASE SampleDDB";
 				try {

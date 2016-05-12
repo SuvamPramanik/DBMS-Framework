@@ -1,3 +1,6 @@
+/*
+ * This class helps to download the content sent by the server.
+ */
 package com.socket;
 
 import com.ui.ChatFrame;

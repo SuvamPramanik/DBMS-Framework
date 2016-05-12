@@ -1,3 +1,6 @@
+/*
+ * This java class defines the socket programming for the client.
+ */
 package com.socket;
 
 import java.io.File;
@@ -112,16 +115,12 @@ public class SocketClient implements Runnable {
 					send(ms);
 				} while (rs.next());
 			} else {
-				if (rcvr != "Suvam") {
+				if (rcvr != "Phoenix") {
 					Message ms = new Message("message", rcvr, "empty", sndr);
 					send(ms);
 				} else {
-					ui.jTextArea1
-							.append("["
-									+ rcvr
-									+ " > Me] : "
-									+ "Hey, have a nice day!"
-									+ "\n");
+					ui.jTextArea1.append("[" + rcvr + " > Me] : "
+							+ "Hey, have a nice day!" + "\n");
 				}
 			}
 			// }
@@ -139,7 +138,7 @@ public class SocketClient implements Runnable {
 		while (keepRunning) {
 			try {
 				int count = 0;
-				Message msg = (Message) In.readObject();
+				Message msg = (Message) In.readObject(); // response object
 				System.out.println("Incoming : " + msg.toString());
 				// System.out.println(msg.content.toString());
 				if (msg.type.equals("_ipconfig")) {
@@ -197,35 +196,37 @@ public class SocketClient implements Runnable {
 								if (c == 0) {
 									c++;
 									Message ms1 = new Message("message",
-											msg.recipient, ui.buffer,
-											"Suvam");
+											msg.recipient, ui.buffer, "Phoenix");
 									send(ms1);
 								}
 							} catch (Exception e) {
 								System.out.println("Empty received wrongly");
 							}
-							// sqlexecute(buffer,msg.sender,"suvam");
+							// sqlexecute(buffer,msg.sender,"Phoenix");
 						} else if (msg.content.substring(0, 2).toLowerCase()
 								.equals("r:")) {
 							try {
 								ui.buffer = msg.content;
-								LineIterator it = FileUtils
-										.lineIterator(ui.writeQuery);
 								try {
-									while (it.hasNext()) {
-										String line = it.nextLine().toString();
-										// System.out.println(ui.buffer1);
-										if (line.equalsIgnoreCase(ui.buffer1)) {
-											count++;
-										}// System.out.print("  "+count);
-										if (count > 3) {
-											sqlprocess(msg.content);
-											break;
-										}
+									/*
+									 * while (it.hasNext()) { String line =
+									 * it.nextLine().toString(); //
+									 * System.out.println(ui.buffer1); if
+									 * (line.equalsIgnoreCase(ui.buffer1)) {
+									 * count++; }//
+									 * System.out.print("  "+count); if (count >
+									 * 3)
+									 */
+									System.out.println(ui.buffer1);
+									File indexDir = new File("index/");
+									String query = EncodeDecode
+											.encode(ui.buffer1);
+									indexedSearch searcher = new indexedSearch();
+									if (searcher.searchIndex(indexDir, query) > 3) {
+										sqlprocess(msg.content);
 									}
-								} finally {
-									count = 0;
-									it.close();
+								} catch(Exception e){
+									e.printStackTrace();
 								}
 
 							} catch (Exception e) {
